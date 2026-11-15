@@ -1,0 +1,21 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "pareja": {
+      ".read": true,
+      ".write": true,
+      "sembrado": { ".validate": "newData.isBoolean()" },
+      "planes": {
+        "$id": {
+          ".validate": "newData.hasChildren(['texto','sel','t'])",
+          "texto": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 60" },
+          "sel": { ".validate": "newData.isBoolean()" },
+          "t": { ".validate": "newData.isNumber()" },
+          "$otro": { ".validate": false }
+        }
+      },
+      "$otro": { ".validate": false }
+    }
+  }
+}

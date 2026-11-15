@@ -1,0 +1,226 @@
+/* =========================================================
+   CARTA ROMÁNTICA — estilos
+   Para cambiar los colores, editá las variables de :root.
+   ========================================================= */
+:root {
+  --crema: #fff6ee;
+  --blanco: #fffdfb;
+  --rosa: #f6d3da;
+  --rosa-fuerte: #efa7b5;
+  --rojo: #cf5a72;          /* acento principal (rojo suave) */
+  --vino: #7d3445;          /* texto principal */
+  --vino-suave: #a4677a;    /* texto secundario */
+  --vidrio: rgba(255, 255, 255, .55);
+  --sombra: 0 24px 50px -26px rgba(207, 90, 114, .45);
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --sans: "Jost", system-ui, sans-serif;
+  --suave: cubic-bezier(.22, .8, .24, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 300;
+  color: var(--vino);
+  line-height: 1.7;
+  background: linear-gradient(165deg, var(--crema) 0%, #fbe4e8 55%, var(--rosa) 100%) fixed;
+  overflow-x: hidden;
+}
+
+/* ---------- Fondo ---------- */
+.fondo { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.fondo::before, .fondo::after {
+  content: ""; position: absolute; width: 60vmax; height: 60vmax; border-radius: 50%;
+  filter: blur(70px); opacity: .55; animation: deriva 26s ease-in-out infinite alternate;
+}
+.fondo::before { background: radial-gradient(circle, #ffd9dd, transparent 65%); top: -20vmax; left: -15vmax; }
+.fondo::after  { background: radial-gradient(circle, #ffe9d6, transparent 65%); bottom: -25vmax; right: -15vmax; animation-delay: -9s; }
+@keyframes deriva { to { transform: translate(8vmax, 6vmax) scale(1.12); } }
+
+#particulas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+main, .pie { position: relative; z-index: 2; }
+
+/* ---------- Pantalla principal ---------- */
+.hero {
+  min-height: 100svh; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding: 3rem 1.5rem; gap: 1.2rem;
+}
+h1, h2, .carta, .tarjeta p, #msgEspecial { font-family: var(--serif); }
+h1 {
+  font-weight: 300; font-style: italic; letter-spacing: -.01em; line-height: 1.08;
+  font-size: clamp(2.5rem, 8vw, 5rem); max-width: 14ch; text-wrap: balance;
+  animation: entrada 1.6s var(--suave) both;
+}
+.subtitulo {
+  max-width: 34ch; font-size: clamp(1rem, 2.6vw, 1.15rem); color: var(--vino-suave);
+  animation: entrada 1.6s .4s var(--suave) both;
+}
+@keyframes entrada { from { opacity: 0; transform: translateY(18px); filter: blur(6px); } }
+
+/* ---------- Corazón (lo memorable de la página) ---------- */
+.corazon {
+  position: relative; width: clamp(130px, 26vw, 180px); aspect-ratio: 1; margin: .6rem 0 1rem;
+  background: none; border: 0; cursor: pointer; display: grid; place-items: center;
+  animation: latido 2.8s 2.2s ease-in-out infinite;
+}
+.corazon::before { /* halo de luz detrás */
+  content: ""; position: absolute; inset: 8%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(239,167,181,.65), transparent 70%);
+  filter: blur(18px); animation: halo 2.8s 2.2s ease-in-out infinite;
+}
+.corazon svg { position: relative; width: 100%; overflow: visible; filter: drop-shadow(0 16px 22px rgba(207, 90, 114, .35)); }
+.corazon path {
+  fill: url(#grad); fill-opacity: 0; stroke: #fff; stroke-width: 1.2;
+  stroke-dasharray: 330; stroke-dashoffset: 330;
+  animation: trazo 2s .3s ease forwards, relleno 1.2s 1.5s ease forwards;
+}
+@keyframes trazo   { to { stroke-dashoffset: 0; } }
+@keyframes relleno { to { fill-opacity: .92; } }
+@keyframes latido  { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.09); } 28% { transform: scale(1); } 42% { transform: scale(1.06); } 60% { transform: scale(1); } }
+@keyframes halo    { 0%, 100% { opacity: .55; } 14%, 42% { opacity: 1; } }
+.corazon:hover { animation-duration: 1.4s; }
+.corazon.toque { animation: toque .7s var(--suave); }
+@keyframes toque { 40% { transform: scale(1.18) rotate(-4deg); } }
+
+/* ---------- Botones ---------- */
+.boton {
+  font: 400 1rem var(--sans); letter-spacing: .02em; color: #fff; cursor: pointer;
+  padding: .95rem 2.1rem; border: 0; border-radius: 999px;
+  background: linear-gradient(135deg, #e48195, var(--rojo));
+  box-shadow: 0 14px 30px -12px rgba(207, 90, 114, .7), inset 0 1px 0 rgba(255,255,255,.4);
+  transition: transform .5s var(--suave), box-shadow .5s var(--suave);
+  animation: entrada 1.6s .8s var(--suave) both;
+}
+.boton:hover { transform: translateY(-3px); box-shadow: 0 20px 36px -12px rgba(207, 90, 114, .8), inset 0 1px 0 rgba(255,255,255,.4); }
+.boton:active { transform: translateY(0) scale(.97); }
+.boton--suave { /* variante translúcida */
+  color: var(--rojo); background: var(--vidrio); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.8); box-shadow: var(--sombra); animation: none;
+}
+.boton--suave:hover { box-shadow: 0 22px 40px -20px rgba(207, 90, 114, .6); }
+
+/* ---------- Secciones ---------- */
+.seccion { max-width: 1000px; margin: 0 auto; padding: 6rem 1.5rem; text-align: center; }
+h2 {
+  font-weight: 300; font-style: italic; font-size: clamp(2rem, 5.5vw, 3.2rem);
+  line-height: 1.15; margin-bottom: 3rem; text-wrap: balance;
+}
+/* Transición entre secciones: aparecen suavemente al hacer scroll */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 1.2s var(--suave), transform 1.2s var(--suave); }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ---------- Tarjetas de mensajes ---------- */
+.tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.4rem; margin-bottom: 3rem; text-align: left; }
+.tarjeta {
+  padding: 2rem 1.8rem; border-radius: 26px; background: var(--vidrio);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.75); box-shadow: var(--sombra);
+  transition: transform .6s var(--suave), box-shadow .6s var(--suave), background .6s;
+  animation: aparece .9s var(--suave) both;
+}
+.tarjeta::before { content: "♡"; display: block; color: var(--rojo); font-size: 1.3rem; margin-bottom: .8rem; transition: transform .6s var(--suave); }
+.tarjeta p { font-size: 1.55rem; line-height: 1.3; font-weight: 500; }
+.tarjeta:hover { transform: translateY(-8px); background: rgba(255,255,255,.75); box-shadow: 0 34px 60px -28px rgba(207, 90, 114, .6); }
+.tarjeta:hover::before { content: "♥"; transform: scale(1.25) rotate(-8deg); }
+@media (min-width: 700px) { .tarjeta:nth-child(even) { margin-top: 1.6rem; } } /* ritmo escalonado */
+@keyframes aparece { from { opacity: 0; transform: translateY(22px) scale(.96); filter: blur(8px); } }
+
+/* ---------- Carta ("Un pequeño recordatorio") ---------- */
+.carta {
+  position: relative; max-width: 640px; margin: 0 auto; padding: clamp(2rem, 6vw, 3.6rem);
+  text-align: left; font-size: clamp(1.2rem, 3.2vw, 1.4rem); line-height: 1.6; font-weight: 400;
+  border-radius: 30px; background: linear-gradient(160deg, rgba(255,253,251,.85), rgba(255,240,236,.7));
+  backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.9); box-shadow: var(--sombra);
+}
+.carta::after { /* marco punteado interior, como papel de carta */
+  content: ""; position: absolute; inset: 12px; border-radius: 20px; border: 1px dashed rgba(207, 90, 114, .3); pointer-events: none;
+}
+.carta p + p { margin-top: 1.1rem; }
+.carta p:first-child::first-letter { float: left; font-size: 4rem; line-height: .85; padding: .3rem .6rem 0 0; color: var(--rojo); font-style: italic; }
+.carta .firma { margin-top: 2rem; text-align: right; font-style: italic; color: var(--rojo); }
+
+/* ---------- Foto enmarcada ---------- */
+.marco {
+  max-width: 720px; margin: 0 auto; padding: 14px 14px 1.8rem; border-radius: 32px;
+  background: var(--vidrio); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,.85); box-shadow: var(--sombra);
+  transition: transform .8s var(--suave), box-shadow .8s var(--suave);
+}
+.marco:hover { transform: translateY(-6px); box-shadow: 0 36px 64px -30px rgba(207, 90, 114, .6); }
+.foto { position: relative; }
+.foto img { display: block; width: 100%; height: auto; border-radius: 20px; } /* height:auto conserva las proporciones originales */
+.foto::after { /* velo rosado muy suave para integrar la foto con la paleta */
+  content: ""; position: absolute; inset: 0; border-radius: 20px; pointer-events: none;
+  background: linear-gradient(180deg, transparent 55%, rgba(207, 90, 114, .14)); box-shadow: inset 0 0 0 1px rgba(255,255,255,.45);
+}
+.marco figcaption { padding: 1.5rem 1.2rem 0; font: italic 500 clamp(1.25rem, 3.8vw, 1.65rem)/1.3 var(--serif); text-wrap: balance; }
+.marco figcaption::before { content: "♥"; display: block; color: var(--rojo); font-size: .9rem; margin-bottom: .5rem; }
+
+/* ---------- Planes compartidos ---------- */
+.intro { max-width: 40ch; margin: -1.8rem auto 2.4rem; color: var(--vino-suave); }
+.planes { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: .7rem; margin-bottom: 2rem; }
+.plan {
+  display: flex; align-items: center; border-radius: 999px; background: var(--vidrio);
+  backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.8); box-shadow: var(--sombra);
+  transition: transform .5s var(--suave), background .5s, box-shadow .5s;
+}
+.plan.nuevo { animation: aparece .7s var(--suave) both; }
+.plan:hover { transform: translateY(-3px); }
+.plan .sel { display: flex; gap: .55rem; align-items: center; padding: .7rem .4rem .7rem 1.2rem; font: 400 1rem var(--sans); color: var(--vino); background: none; border: 0; cursor: pointer; text-align: left; }
+.plan .sel::before { content: "♡"; color: var(--rojo); transition: transform .5s var(--suave); }
+.plan .quitar { padding: .7rem 1.1rem .7rem .4rem; font-size: 1.15rem; line-height: 1; color: var(--vino-suave); background: none; border: 0; cursor: pointer; opacity: .55; transition: opacity .3s; }
+.plan .quitar:hover { opacity: 1; }
+.plan.activo { background: linear-gradient(135deg, #e48195, var(--rojo)); border-color: transparent; }
+.plan.activo .sel, .plan.activo .quitar { color: #fff; }
+.plan.activo .sel::before { content: "♥"; color: #fff; transform: scale(1.2); }
+.vacio { color: var(--vino-suave); font-style: italic; }
+.nuevo-plan { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; max-width: 520px; margin: 0 auto; }
+.nuevo-plan input {
+  flex: 1 1 220px; min-width: 0; padding: .9rem 1.4rem; font: 300 1rem var(--sans); color: var(--vino);
+  border-radius: 999px; border: 1px solid rgba(255,255,255,.85); background: var(--vidrio); backdrop-filter: blur(14px);
+  transition: box-shadow .4s, border-color .4s;
+}
+.nuevo-plan input:focus { outline: none; border-color: var(--rojo); box-shadow: 0 0 0 4px rgba(207, 90, 114, .15); }
+.nuevo-plan input::placeholder { color: var(--vino-suave); opacity: .7; }
+.estado { margin-top: 1.2rem; font-size: .85rem; color: var(--vino-suave); min-height: 1.4em; }
+
+/* ---------- Contador (meses · días · horas · minutos · segundos) ---------- */
+.vidrio { background: var(--vidrio); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.8); box-shadow: var(--sombra); border-radius: 36px; }
+.contador { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(.2rem, 2vw, 1.2rem); max-width: 720px; margin: 0 auto; padding: clamp(1.5rem, 5vw, 2.6rem) clamp(.6rem, 3vw, 2.4rem); }
+.unidad { display: flex; flex-direction: column; align-items: center; }
+.numero { font: 300 clamp(1.8rem, 8.5vw, 4rem)/1 var(--serif); color: var(--rojo); font-variant-numeric: tabular-nums; }
+.etiqueta { margin-top: .55rem; color: var(--vino-suave); font-size: clamp(.62rem, 2.5vw, .95rem); }
+.desde { margin-top: 1.4rem; font: italic 1.2rem var(--serif); color: var(--vino-suave); }
+
+/* ---------- Pie ---------- */
+.pie { text-align: center; padding: 2rem 1.5rem 4rem; font: italic 1.2rem var(--serif); color: var(--vino-suave); }
+.pie::before { content: "♥"; display: block; color: var(--rojo); font-size: .9rem; margin-bottom: .4rem; }
+
+/* ---------- Mensaje especial (ventana) ---------- */
+dialog {
+  width: min(92vw, 460px); margin: auto; padding: 3rem 2rem 2.4rem; text-align: center; color: var(--vino);
+  border: 1px solid rgba(255,255,255,.9); border-radius: 34px; overflow: visible;
+  background: linear-gradient(160deg, rgba(255,253,251,.92), rgba(253,228,232,.88));
+  backdrop-filter: blur(22px); box-shadow: 0 40px 80px -30px rgba(207, 90, 114, .7);
+}
+dialog[open] { animation: abrir .8s var(--suave); }
+dialog::backdrop { background: rgba(125, 52, 69, .22); backdrop-filter: blur(6px); animation: velo .6s ease; }
+@keyframes abrir { from { opacity: 0; transform: translateY(30px) scale(.9); } }
+@keyframes velo  { from { opacity: 0; } }
+.dlg-corazon { font-size: 2rem; color: var(--rojo); margin-bottom: 1rem; animation: latido 2.4s ease-in-out infinite; }
+#msgEspecial { font-size: 1.7rem; line-height: 1.3; font-style: italic; margin-bottom: 2rem; text-wrap: balance; }
+dialog .boton { animation: none; }
+
+/* Chispas que salen al tocar el botón o el corazón (las crea script.js) */
+.chispa { position: fixed; z-index: 50; pointer-events: none; color: var(--rojo); animation: volar 1.4s var(--suave) forwards; }
+@keyframes volar { to { transform: translate(var(--dx), var(--dy)) scale(.4) rotate(var(--giro)); opacity: 0; } }
+
+/* ---------- Accesibilidad ---------- */
+:focus-visible { outline: 2px solid var(--rojo); outline-offset: 4px; border-radius: 12px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  html { scroll-behavior: auto; }
+  .corazon path { stroke-dashoffset: 0; fill-opacity: .92; }
+}
